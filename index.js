@@ -1,21 +1,16 @@
-const ExcelJS = require('exceljs');
-const workbook = new ExcelJS.Workbook();
-const sheet = workbook.addWorksheet('My Sheet');
-sheet.addTable({
-  name: 'MyTable',
-  ref: 'A1',
-  headerRow: true,
-  totalsRow: true,
-  columns: [
-    {name: 'Subject', totalsRowLabel: 'Sum:'},
-    {name: 'Mark', totalsRowFunction: 'sum', filterButton: true},
-  ],
-  rows: [
-    ["English", 70.10],
-    ["Bangla", 70],
-    ["Math", 90],
-		["Science", 85],
-  ]
-});
+const express = require('express');
+const app = express();
+const { generateExcel } = require('./excel');
 
-workbook.xlsx.writeFile('data.xlsx');
+const PORT = 4777;
+
+app.get('/excel', async (req, res) => {
+  await generateExcel();
+  return res.download('data.xlsx', (error) => {
+    console.log("error", error);
+  })
+})
+
+app.listen(PORT, () => {
+  console.log(`Server is running at localhost:${PORT}`);
+})
