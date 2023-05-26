@@ -25,3 +25,12 @@ exports.generateExcel = async () => {
 
 }
 
+exports.uploadExcel = async (data) => {
+	const workbook = new ExcelJS.Workbook();
+	const sheetFile = await workbook.xlsx.load(data);
+	const worksheet = sheetFile.getWorksheet();
+	worksheet.eachRow(function(row, rowNumber) {
+		console.log('Row ' + rowNumber + ' = ' + JSON.stringify(row.values));
+	});
+}
+
